@@ -12,7 +12,6 @@ import ro.zynk.futureup.controllers.responses.WalletResponse;
 import ro.zynk.futureup.exceptions.NotFoundException;
 import ro.zynk.futureup.services.WalletService;
 
-
 @RestController
 @RequestMapping("/wallets")
 public class WalletController {
@@ -27,7 +26,6 @@ public class WalletController {
     public ResponseEntity<BaseResponse> saveWallet(@RequestBody WalletResponse walletResponse) {
         return new ResponseEntity<>(walletService.saveNewWallet(walletResponse), HttpStatus.OK);
     }
-
 
     @GetMapping(value = "")
     public ResponseEntity<BaseResponse> getWallets() {
@@ -72,6 +70,15 @@ public class WalletController {
         } catch (NotFoundException e) {
             return new ResponseEntity<>(new ErrorResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
         }
+    }
 
+    @GetMapping(value = "/get_value_of_wallet")
+    public ResponseEntity<BaseResponse> getValueOfWallet(@RequestParam("walletId") Long walletId) {
+        // @QueryParam from RESTful Web Services == @RequestParam from Spring
+        try {
+            return new ResponseEntity<>(walletService.getValueOfWallet(walletId), HttpStatus.OK);
+        } catch (NotFoundException e) {
+            return new ResponseEntity<>(new ErrorResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
+        }
     }
 }
